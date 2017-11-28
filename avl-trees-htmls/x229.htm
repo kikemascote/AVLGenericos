@@ -1,0 +1,179 @@
+<HTML
+><HEAD
+><TITLE
+>Inserción</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Balance del árbol"
+HREF="x191.htm"><LINK
+REL="NEXT"
+TITLE="Eliminación"
+HREF="x235.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x191.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x235.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN229"
+>Inserción</A
+></H1
+><P
+>Como dijimos en <A
+HREF="x191.htm"
+>the Section called <I
+>Balance del árbol</I
+></A
+>,
+    implementaremos la inserción de elementos en un árbol AVL de
+    forma análoga a cómo lo haríamos para árboles binarios de
+    búsqueda salvo que en cada recursión del algoritmo
+    verificaremos y corregiremos el equilibrio del árbol. También
+    es importante ir actualizando las alturas de cada nodo en
+    cada recursión dado que las rotaciones, inserciónes y
+    eliminaciones pueden modificarlas. </P
+><P
+>Dado que ya vimos funciones tanto para balancear un
+    árbol y para actualizar la altura de un nodo (ambas de tiempo
+    de ejecución constante), estamos listos para implementar el
+    algoritmo de inserción. Esperamos que sea intuitivo. </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void insertar (AVLTree ** t, int x);
+/* inserta x en el árbol en un tiempo O(log(n)) peor caso. */
+
+
+void
+insertar (AVLTree ** t, int x)
+{
+  if (es_vacio (*t))
+    *t = hacer (x, vacio (), vacio ());	/* altura actualizada
+					   automáticamente */
+  else
+    {
+      if (x &#60; raiz (*t))
+	insertar (&#38;(*t)-&#62;izq, x);
+
+      else
+	insertar (&#38;(*t)-&#62;der, x);
+
+      balancear (t);
+      actualizar_altura (*t);
+    }
+}
+      </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x191.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x235.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Balance del árbol</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Eliminación</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

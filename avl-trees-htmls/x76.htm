@@ -1,0 +1,202 @@
+<HTML
+><HEAD
+><TITLE
+>Consideraciones sobre la altura de los nodos</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Declaración del tipo de dato"
+HREF="x41.htm"><LINK
+REL="NEXT"
+TITLE="Rotaciones simples"
+HREF="x88.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x41.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x88.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="ALTURA_SEC"
+>Consideraciones sobre la altura de los nodos</A
+></H1
+><P
+>Como vimos en la definición del tipo abstracto para
+    nodos de árboles AVL, se necesitará tener acceso a la altura
+    cada nodo del árbol en tiempo constante. Dado que una función
+    para hallar la altura de un nodo dado en un árbol tendrá un
+    tiempo de ejecución de O(log(n)) peor caso, no nos queda otra
+    alternativa que almacenar una variable altura en cada nodo e
+    irla actualizando en las inserciones y eliminaciones que se
+    efectúen sobre el árbol. </P
+><P
+>Como el lector ya debería saber, una función para
+    calcular la altura de un nodo puede escribirse recursivamente
+    como: </P
+><PRE
+CLASS="PROGRAMLISTING"
+>int altura(AVLTree *t)
+{
+  if(es_vacio(t)) 
+    return -1;
+  else 
+    return max(altura(izquierdo(t)), altura(derecho(t)));
+}</PRE
+><P
+>Queremos que la altura de un árbol que consta de sólo
+    un nodo sea 0. Entonces debemos definir la altura de un árbol
+    vacío como -1.</P
+><P
+>Sin embargo, no podemos darnos el lujo de tener una
+    función cuyo tiempo de ejecución siempre es O(n) ya que, como
+    dijimos, necesitamos la altura de un nodo en tiempo
+    constante. Para ello, redefiniremos la función de la
+    siguiente manera, aprovechando el campo altura que ahora
+    tiene cada nodo del árbol. </P
+><PRE
+CLASS="PROGRAMLISTING"
+>int altura (AVLTree * t)
+{
+  if(es_vacio(t))
+    return -1;
+  else 
+    return t-&#62;altura;
+}</PRE
+><DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>Debemos tener mucho cuidado en actualizar el campo
+      altura de cada nodo siempre que modifiquemos de alguna
+      manera el árbol AVL. </P
+></BLOCKQUOTE
+></DIV
+><P
+>Así, es importante tener una función que nos permita
+    actualizar la altura de un nodo cualquiera del árbol y cuyo
+    tiempo de ejecución sea O(1) en el peor de los casos. A
+    continuación se lista una tal función:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>void
+actualizar_altura (AVLTree * t)
+{
+  if(!es_vacio(t))
+    t-&#62;altura = max (altura ((t)-&#62;izq), altura ((t)-&#62;der)) + 1;
+}</PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x41.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x88.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Declaración del tipo de dato</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rotaciones simples</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

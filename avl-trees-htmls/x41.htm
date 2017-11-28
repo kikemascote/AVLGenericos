@@ -1,0 +1,367 @@
+<HTML
+><HEAD
+><TITLE
+>Declaración del tipo de dato</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Menor cantidad posible de nodos para una altura
+    dada"
+HREF="x38.htm"><LINK
+REL="NEXT"
+TITLE="Consideraciones sobre la altura de los nodos"
+HREF="x76.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x38.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x76.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="DECL_TIPO_DATO"
+>Declaración del tipo de dato</A
+></H1
+><P
+>Iremos ya declarando el tipo de dato que representará
+    un árbol AVL. Esto nos ayudará a formalizar las cosas y nos
+    permitirá en el correr de este documento ir definiendo las
+    operaciones sobre el tipo de dato abstracto. </P
+><P
+>El lenguaje a utilizar será C. Fue elegido tan sólo por
+    gustos personales del autor de este documento. Sin embargo se
+    tratará de usar sólo aquellas características de C que puedan
+    ser fácilmente implementadas en la mayoría de los lenguajes
+    estructurados como Pascal, Modula-2, etc. </P
+><P
+></P
+><P
+><B
+>Algunas consideraciones sobre la implementación del
+      tipo de dato abstracto</B
+></P
+><UL
+><LI
+><P
+>Las declaraciones que se listarán a
+        continuación no tienen porqué tomarse al pie de la
+        letra. Cada programador tendrá su estilo y su forma de
+        resolver sus problemas.</P
+></LI
+><LI
+><P
+>Las declaraciones que se listarán a continuación no
+      tienen porqué tomarse al pie de la letra. Cada programador
+      tendrá su estilo y su forma de resolver sus
+      problemas.</P
+></LI
+><LI
+><P
+>Como se podrá ver en el siguiente listado, la única
+      diferencia de los nodos de un árbol AVL con los de un árbol
+      binario común es la variable <TT
+CLASS="VARNAME"
+>altura</TT
+> en
+      la estructura nodo.</P
+></LI
+><LI
+><P
+>Los nodos de un árbol pueden almacenar cualquier
+        tipo de dato, arbitrariamente complejo. En este
+        documento, por razones de simplicidad se usará el tipo de
+        dato más simple que soporte comparaciones, o sea los
+        enteros (tipo int de Ansi C). En el caso de que los datos
+        almacenados en cada nodo sean más complicados (por
+        ejemplo estructuras) o sean dinámicamente almacenados en
+        memoria, algunas funciones deberán adaptarse para
+        manejarlos. Por ejemplo, se deberá pasar como parámetros
+        funciones de comparación, equivalencia, y de liberación
+        de memoria. </P
+></LI
+></UL
+><P
+>A continuación se lista la declaración del tipo
+      abstracto de dato <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Árbol AVL</I
+></SPAN
+>:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef struct AVLNode AVLTree;
+
+struct AVLNode 
+{
+  int dato;                                                <A
+NAME="TIPODATO"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+>
+  AVLTree izq;
+  AVLTree der;
+  int altura;                                              <A
+NAME="ALTURA"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+>
+};
+      </PRE
+><DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="x41.htm#TIPODATO"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+></DT
+><DD
+>Como ya dijimos, por cuestiones de simplicidad,
+          la información almacenada en cada nodo del árbol será
+          un entero. </DD
+><DT
+><A
+HREF="x41.htm#ALTURA"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+></DT
+><DD
+>Cada nodo tendrá almacenada su propia altura con
+          respecto a la raíz absoluta del árbol con el que
+            estamos trabajando. Esta característica se verá en
+          <A
+HREF="x76.htm"
+>the Section called <I
+>Consideraciones sobre la altura de los nodos</I
+></A
+>. </DD
+></DL
+></DIV
+><P
+>A continuación declaramos las operaciónes básicas
+    sobre árboles binarios y con las cuales trabajaremos para
+      acceder al tipo abstracto de dato <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Árbol
+    AVL</I
+></SPAN
+> de aquí en más. </P
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>Si se usa algún lenguaje orientado a objetos como C++
+      o java y ya se tienen clases como árboles binarios o
+      árboles binarios de búsqueda, conviene declarar los árboles
+      AVL como una subclase de alguna de estas. Luego, las
+      operaciones declaradas a continuación se heredarán de estos
+      tipos.  </P
+></BLOCKQUOTE
+></DIV
+><PRE
+CLASS="PROGRAMLISTING"
+>/* Constructores */
+
+AVLTree *vacio (void);
+/* devuelve un árbol AVL vacío */
+
+AVLTree *hacer (int x, AVLTree * izq, AVLTree * der);
+/* devuelve un nuevo árbol formado por una raíz con valor x,
+   subárbol izquierdo el árbol izq y subárbol derecho el árbol
+   der. */
+
+
+
+
+/*  Predicados   */
+
+bool es_vacio (AVLTree * t);
+/* devuelve true sii. t es un árbol vacío. */
+
+
+
+
+/*  Selectores   */
+
+AVLTree *izquierdo (AVLTree * t);
+/* devuelve el subárbol izquierdo de t. */
+
+AVLTree *derecho (AVLTree * t);
+/* devuelve el subárbol derecho de t. */
+
+int raiz (AVLTree * t);
+/* devuelve el valor de la raíz del árbol t. Precondición:
+   !es_vacio(t) */
+
+int altura (AVLTree * t);
+/* devuelve la altura del nodo t en el árbol */
+
+
+
+
+/*  Destructures */
+
+void destruir (AVLTree * t, void (*free_dato) (int));
+/* libera la memoria ocupada por los nodos del árbol. Si los
+   datos almacenados en cada nodo están almacenados dinámicamente
+   y se los quiere liberar también, debe pasarse como segundo
+   parámetro una función de tipo void func(int t) que libere
+   la memoria de objetos int. Si los datos no están
+   almacenados dinámicamente o simplemente no se los quiere
+   destruir (liberar de memoria), pásese como segundo parámetro
+   NULL. Nota: Función Recursiva! */</PRE
+><DIV
+CLASS="NOTE"
+><BLOCKQUOTE
+CLASS="NOTE"
+><P
+><B
+>Note: </B
+>Como se ha podido apreciar en el segmento de código
+      anterior, se ha tratado de usar, en lo posible, el lenguaje
+      español tanto para los comentarios como para los
+      identificadores de variables y funciones. Sin embargo, esto
+      se hace sólo con motivo de ser coherentes con el documento
+      y el autor recomienda a los lectores programadores que en
+      sus programas utilicen el lenguaje inglés para nombrar los
+      identificadores. </P
+></BLOCKQUOTE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x38.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x76.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Menor cantidad posible de nodos para una altura
+    dada</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Consideraciones sobre la altura de los nodos</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

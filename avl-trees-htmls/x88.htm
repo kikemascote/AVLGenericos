@@ -1,0 +1,531 @@
+<HTML
+><HEAD
+><TITLE
+>Rotaciones simples</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Consideraciones sobre la altura de los nodos"
+HREF="x76.htm"><LINK
+REL="NEXT"
+TITLE="Rotaciones dobles"
+HREF="x159.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x76.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x159.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="ROTACION_SIMPLE"
+>Rotaciones simples</A
+></H1
+><P
+>Veremos a continuación una operación sencilla sobre un
+    árbol binario de búsqueda que conserva el órden en sus nodos
+    y que nos ayudará a restaurar la propiedad de equilibrio de
+    un árbol AVL al efectuar operaciones sobre el mismo que
+    puedan perturbarla. </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE03"
+></A
+><P
+><B
+>Figure 3. Árbol antes de la rotación simple</B
+></P
+><P
+><IMG
+SRC="tree03.png"
+ALIGN="CENTER"></P
+></DIV
+><P
+>Miremos por un momento el árbol de <A
+HREF="x88.htm#TREE03"
+>Figure 3</A
+>. Dado que este es un árbol de búsqueda se
+    debe cumplir <TT
+CLASS="VARNAME"
+>x</TT
+> &lt; <TT
+CLASS="VARNAME"
+>y</TT
+> y
+    además todos los nodos del subárbol <TT
+CLASS="VARNAME"
+>A</TT
+>
+    deben ser menores que <TT
+CLASS="VARNAME"
+>x</TT
+> y
+    <TT
+CLASS="VARNAME"
+>y</TT
+>; todos los nodos del subárbol
+    <TT
+CLASS="VARNAME"
+>B</TT
+> deben ser mayores que
+    <TT
+CLASS="VARNAME"
+>x</TT
+> pero menores que <TT
+CLASS="VARNAME"
+>y</TT
+>; y
+    todos los nodos del subárbol <TT
+CLASS="VARNAME"
+>C</TT
+> deben ser
+    mayores que <TT
+CLASS="VARNAME"
+>y</TT
+> y por lo tanto que
+    <TT
+CLASS="VARNAME"
+>x</TT
+>. </P
+><P
+>En <A
+HREF="x88.htm#TREE04"
+>Figure 4</A
+> se ha modificado
+    sencillamante el árbol. Como puede verificarse fácilmente por
+    las desigualdades descriptas en el párrafo anterior, el nuevo
+    árbol sigue manteniendo el órden entre sus nodos, es decir,
+    sigue siendo un árbol binario de búsqueda. A esta
+    transformación se le denomina rotación simple (o
+    sencilla). </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE04"
+></A
+><P
+><B
+>Figure 4. Árbol luego de la rotación simple</B
+></P
+><P
+><IMG
+SRC="tree04.png"
+ALIGN="CENTER"></P
+></DIV
+><P
+>Veamos un ejemplo concreto. Deseamos insertar el número
+      3 en el árbol de enteros de <A
+HREF="x88.htm#TREE05"
+>Figure 5</A
+>. La
+      inserción se muestra punteada en <A
+HREF="x88.htm#TREE06"
+>Figure 6</A
+>. Sin embargo, como puede verse, la
+      inserción a provocado la pérdida de la propiedad de
+      equilibrio del árbol ya que dicha propiedad no se cumple en
+      el nodo marcado con rojo. ¿Qué hacemos para recomponer
+      dicha pripiedad? Simplemente realizamos una rotación
+      simple. En este caso se dice que la rotación es
+      <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>izquierda</I
+></SPAN
+> ya que la "pérdida de
+      equilibrio se produce hacia la izquierda. En <A
+HREF="x88.htm#TREE07"
+>Figure 7</A
+> puede verse el árbol luego de la
+      rotación: la propiedad de equilibrio ha sido
+      reestablecida. Como mostramos atrás, la rotación conserva
+      el orden entre los nodos, por lo que podemos afirmar que
+      este último árbol si es AVL. </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE05"
+></A
+><P
+><B
+>Figure 5. Árbol AVL</B
+></P
+><P
+><IMG
+SRC="tree05.png"
+ALIGN="CENTER"></P
+></DIV
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE06"
+></A
+><P
+><B
+>Figure 6. Árbol luego de la inserción: pérdida de la propiedad
+      de equilibrio marcada con rojo. </B
+></P
+><P
+><IMG
+SRC="tree06.png"
+ALIGN="CENTER"></P
+></DIV
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE07"
+></A
+><P
+><B
+>Figure 7. Reestablecimiento de la propiedad de equilibrio
+      mediante una rotación simple sobre el nodo de valor 5. </B
+></P
+><P
+><IMG
+SRC="tree07.png"
+ALIGN="CENTER"></P
+></DIV
+><P
+>Como podemos observar, el resultado luego de la rotación
+    es un árbol AVL: posee tanto el órden correcto de un árbol de
+    búsqueda entre sus nodos y la propiedad de equilibrio. En
+    este caso el "desequilibrio" en el árbol con raíz 5 era
+    enteramente hacia la izquierda y por lo tanto, como ya
+      dijimos, la rotación efectuada se denomina
+    <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>rotación simple izquierda</I
+></SPAN
+>. En el caso de
+    un "desequilibrio" hacia la derecha, la rotación es análoga y
+      se denomina <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>rotación simple
+        derecha</I
+></SPAN
+>. En <A
+HREF="x88.htm#TREE08"
+>Figure 8</A
+> se ven dos
+    árboles: el primero tiene un "desequilibrio hacia la derecha"
+    marcado en rojo y el segundo es el resultado de aplicar una
+    rotación simple derecha. </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE08"
+></A
+><P
+><B
+>Figure 8. Ejemplo de reestablecimiento de propiedad de
+      equilibrio gracias a una rotación simple derecha. </B
+></P
+><P
+><IMG
+SRC="tree08.png"
+ALIGN="CENTER"></P
+></DIV
+><DIV
+CLASS="FORMALPARA"
+><P
+><B
+>Ilustración de la operación rotación simple. </B
+>en <A
+HREF="x88.htm#TREE10"
+>Figure 9</A
+> se ilustra la operación
+      rotación simple. Los arcos de colores son los que se
+      eliminan o agregan, según sea la rotación izquierda o
+      derecha. </P
+></DIV
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE10"
+></A
+><P
+><B
+>Figure 9. Rotación simple</B
+></P
+><P
+><IMG
+SRC="tree10.png"
+ALIGN="CENTER"></P
+></DIV
+><DIV
+CLASS="SECTION"
+><H2
+CLASS="SECTION"
+><A
+NAME="ROTAR_S_IMPL"
+>Implementación de la rotación simple:</A
+></H2
+><PRE
+CLASS="PROGRAMLISTING"
+>void rotar_s (AVLTree ** t, bool izq);                     <A
+NAME="ROTAR_S_DECL"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+>
+
+/* realiza una rotación simple del árbol t el cual se      <A
+NAME="ROTAR_S_COMMENT"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+>
+   pasa por referencia. La rotación será izquierda
+   sii. (izq==true) o será derecha
+   sii. (izq==false). 
+
+   Nota: las alturas de t y sus subárboles serán actualizadas
+   dentro de esta función!
+
+   Precondición:
+   si (izq==true) ==&#62; !es_vacio(izquierdo(t)) 
+   si (izq==false) ==&#62; !es_vacio(derecho(t))
+*/
+
+
+
+void
+rotar_s (AVLTree ** t, bool izq)                           <A
+NAME="ROTAR_S_PARAMS"
+><IMG
+SRC="../images/callouts/3.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(3)"></A
+>                           <A
+NAME="ROTAR_S_PARAMS2"
+><IMG
+SRC="../images/callouts/4.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(4)"></A
+>
+{
+  AVLTree *t1;
+  if (izq)	/* rotación izquierda */
+    {
+      t1 = izquierdo (*t);
+      (*t)-&#62;izq = derecho (t1);
+      t1-&#62;der = *t;
+    }
+  else		/* rotación derecha */
+    {
+      t1 = derecho (*t);
+      (*t)-&#62;der = izquierdo (t1);
+      t1-&#62;izq = *t;
+    }
+
+  /* actualizamos las alturas de ambos nodos modificados */
+  actualizar_altura (*t);
+  actualizar_altura (t1);
+
+  /* asignamos nueva raíz */
+  *t = t1;
+}</PRE
+><DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="x88.htm#ROTAR_S_DECL"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+></DT
+><DD
+>Declaración de la función rotar_s(). Esta
+            declaración y el siguiente comentario deberían ir en
+              el archivo de cabecera, interfaz del tipo abstracto
+              <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>árbol AVL</I
+></SPAN
+> con el usuario. </DD
+><DT
+><A
+HREF="x88.htm#ROTAR_S_COMMENT"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+></DT
+><DD
+>Un breve comentario que explica lo que hace la
+            función, los parámetros que acepta y las
+            precondiciones que éstos deben cumplir para que la
+            función se ejecute correctamente. </DD
+><DT
+><A
+HREF="x88.htm#ROTAR_S_PARAMS"
+><IMG
+SRC="../images/callouts/3.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(3)"></A
+></DT
+><DD
+>Como el programador de C más experimentado
+            puede ver, el paso a la función es el paso por
+            referencia clásico en C. Lo que se pasa no es un
+            puntero a la raiz del árbol sino la dirección de
+            dicho puntero. De esta manera, dentro de la función
+            podremos cambiar la misma raiz si es necesario (lo
+            que justamente hacemos en las rotaciones). </DD
+><DT
+><A
+HREF="x88.htm#ROTAR_S_PARAMS2"
+><IMG
+SRC="../images/callouts/4.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(4)"></A
+></DT
+><DD
+>También se acepta como segundo parámetro un
+            valor boleano que determina si la rotación simple a
+            efectuar sobre el árbol es izquierda o
+            derecha. </DD
+></DL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x76.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x159.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Consideraciones sobre la altura de los nodos</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Rotaciones dobles</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

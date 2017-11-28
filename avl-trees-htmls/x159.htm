@@ -1,0 +1,298 @@
+<HTML
+><HEAD
+><TITLE
+>Rotaciones dobles</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Rotaciones simples"
+HREF="x88.htm"><LINK
+REL="NEXT"
+TITLE="Balance del árbol"
+HREF="x191.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x88.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x191.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="ROTACION_DOBLE"
+>Rotaciones dobles</A
+></H1
+><P
+>Hemos visto cómo restaurar la propiedad de equilibrio
+    cuando se presentan desequilibrios "hacia la izquierda" o
+    "hacia la derecha" luego de realizar inserciones en un árbol
+    AVL. Sin embargo y como veremos, pueden ocurrir
+    "desequilibrios en zig-zag", es decir desequilibios que no
+    son ni a la derecha ni a la izquierda como es el caso de los
+      árboles de <A
+HREF="x159.htm#TREE09"
+>Figure 10</A
+>.  </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE09"
+></A
+><P
+><B
+>Figure 10. Ejemplos de "desequilibrios" en los cuales no
+      funciona la rotación simple. </B
+></P
+><P
+><IMG
+SRC="tree09.png"
+ALIGN="CENTER"></P
+></DIV
+><P
+>En estos casos se aplica otro tipo de rotación
+      denominado <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>rotación doble</I
+></SPAN
+> la cual,
+      análogamente a la rotación simple, puede ser izquierda o
+      derecha según el caso. </P
+><P
+>En realidad, la rotación doble constará de dos
+    rotaciones simples. El caso general de la
+    rotación doble izquierda en un árbol AVL se puede observar en
+      <A
+HREF="x159.htm#TREE11"
+>Figure 11</A
+>. </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE11"
+></A
+><P
+><B
+>Figure 11. Rotación doble izquierda</B
+></P
+><P
+><IMG
+SRC="tree11.png"></P
+></DIV
+><P
+>La rotación doble derecha es el proceso inverso a la
+    rotación doble izquierda. </P
+><P
+>Dado que, como vimos, una rotación doble es en realidad
+    dos rotaciones simples, podemos implementar la función para
+    la rotación doble tan sólo utilizando
+    <TT
+CLASS="FUNCTION"
+>rotar_s</TT
+> vista en <A
+HREF="x88.htm#ROTAR_S_IMPL"
+>the Section called <I
+>Implementación de la rotación simple:</I
+></A
+> lo cual se hace a
+    continuación:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>void rotar_d (AVLTree ** t, bool izq);                     <A
+NAME="ROTAR_D_DECL"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+>
+/* realiza una rotación doble. Funciona análogamente a
+   rotar_s(). */
+
+
+void
+rotar_d (AVLTree ** t, bool izq)                           <A
+NAME="ROTAR_D_PARAMS"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+>
+{
+  if (izq)	       	/* rotación izquierda */
+    {
+      rotar_s (&#38;(*t)-&#62;izq, false);
+      rotar_s (t, true);
+    }
+  else		       	/* rotación derecha */
+    {
+      rotar_s (&#38;(*t)-&#62;der, true);
+      rotar_s (t, false);
+    }
+
+  /* la actualización de las alturas se realiza en las rotaciones
+     simples */
+}</PRE
+><DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="x159.htm#ROTAR_D_DECL"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+></DT
+><DD
+>Declaración de la función
+          <TT
+CLASS="FUNCTION"
+>rotar_d()</TT
+>; debería ir en un
+          archivo de cabecera. </DD
+><DT
+><A
+HREF="x159.htm#ROTAR_D_PARAMS"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+></DT
+><DD
+>Los parámetros de <TT
+CLASS="FUNCTION"
+>rotar_d()</TT
+>
+            son análogos a los de <TT
+CLASS="FUNCTION"
+>rotar_s()</TT
+>
+            vistos en <A
+HREF="x88.htm#ROTAR_S_IMPL"
+>the Section called <I
+>Implementación de la rotación simple:</I
+></A
+>. </DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x88.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x191.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rotaciones simples</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Balance del árbol</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

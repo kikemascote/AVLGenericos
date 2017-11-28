@@ -1,0 +1,362 @@
+<HTML
+><HEAD
+><TITLE
+>Balance del árbol</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Rotaciones dobles"
+HREF="x159.htm"><LINK
+REL="NEXT"
+TITLE="Inserción"
+HREF="x229.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x159.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x229.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="BALANCE_SEC"
+>Balance del árbol</A
+></H1
+><P
+>Como se mostró anteriormente, cda vez que se modifique
+    el árbol (i.e. agreguen o eliminen elementos) corremos el
+    riesgo de que pierda su propiedad de equilibrio en alguno de
+    sus nodos, la cual debe conservarse si queremos obtener
+    tiempos de ejecución de orden O(log(n)) en el peor de los
+    casos. </P
+><P
+>La idea general que se utiliza en esta implementación
+    de árboles AVL para implementar los algoritmos de inserción y
+      de eliminación de nodos sobre un AVL es la
+    siguiente:<P
+></P
+><UL
+><LI
+><P
+>Efectuar los algoritmos de igual forma que en los
+          árboles binarios de búsqueda pero</P
+></LI
+><LI
+><P
+>en cada recursión ir actualizando las alturas y
+          rebalanceando el árbol en caso de que sea necesario.
+          </P
+></LI
+></UL
+>
+    </P
+><P
+>En <A
+HREF="x76.htm"
+>the Section called <I
+>Consideraciones sobre la altura de los nodos</I
+></A
+> se implementó una
+    función de tiempo de ejecución O(log(n)), peor caso, para
+    actualizar la altura de un nodo. Así, lo que nos falta es una
+    función que detecte un "desequilibrio" en un nodo dado del
+    árbol y por medio de un número finito de rotaciones lo
+    equilibre. </P
+><DIV
+CLASS="IMPORTANT"
+><BLOCKQUOTE
+CLASS="IMPORTANT"
+><P
+><B
+>Important: </B
+>No se demostrará aquí, pero cabe señalar la
+      existencia de un teorema que asegura que el número máximo
+      de rotaciones para equilibrar un árbol AVL luego de una
+      inserción es 2 y luego de una eliminación es log(n) dónde n
+      es el número de nodos. </P
+></BLOCKQUOTE
+></DIV
+><P
+>En las secciones anteriores hemos ya descripto a
+    grandes razgos cuál rotación usar en cada caso de
+    desequilibrio. Esperamos que en el código siguiente el lector
+    pueda formalizar tales ideas. </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void balancear (AVLTree ** t);                             <A
+NAME="BALANCEAR_DECL"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+>
+/* Detecta y corrige por medio de un número finito de rotaciones
+   un desequilibrio en el árbol *t. Dicho desequilibrio no debe
+   tener una diferencia de alturas de más de 2. */
+
+
+void
+balancear (AVLTree ** t)
+{
+  if(!es_vacio(*t))
+  {
+    if (altura (izquierdo (*t)) - altura (derecho (*t)) == 2)<A
+NAME="BALANCEAR_ALTURA"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+>
+      {		      	/* desequilibrio hacia la izquierda! */
+        if (altura ((*t)-&#62;izq-&#62;izq) &#62;= altura ((*t)-&#62;izq-&#62;der))<A
+NAME="BALANCEAR_DESEQ"
+><IMG
+SRC="../images/callouts/3.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(3)"></A
+>
+          /* desequilibrio simple hacia la izquierda */
+          rotar_s (t, true);
+        else
+          /* desequilibrio doble hacia la izquierda */
+          rotar_d (t, true);
+      }
+    
+    else if (altura (derecho (*t)) - altura (izquierdo (*t)) == 2)<A
+NAME="BALANCEAR_DERECHA"
+><IMG
+SRC="../images/callouts/4.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(4)"></A
+>
+      {		  	/* desequilibrio hacia la derecha! */
+        if (altura ((*t)-&#62;der-&#62;der) &#62;= altura ((*t)-&#62;der-&#62;izq))
+          /* desequilibrio simple hacia la izquierda */
+          rotar_s (t, false);
+        else
+          /* desequilibrio doble hacia la izquierda */
+          rotar_d (t, false);
+      }
+  }
+}</PRE
+><DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="x191.htm#BALANCEAR_DECL"
+><IMG
+SRC="../images/callouts/1.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+></DT
+><DD
+>Declaración de la función
+          <TT
+CLASS="FUNCTION"
+>balancear()</TT
+>. Esta declaración
+          junto con el comentario que le sigue deberían estar en
+          un archivo de cabecera usado para la interfaz del tipo
+          abstracto de dato árbol avl con el usuario-programador.</DD
+><DT
+><A
+HREF="x191.htm#BALANCEAR_ALTURA"
+><IMG
+SRC="../images/callouts/2.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+></DT
+><DD
+>Como dice en el comentario de la función, sólo se
+          contemplarán aquellos desequilibrios cuya diferencia
+          entre alturas es hasta 2. </DD
+><DT
+><A
+HREF="x191.htm#BALANCEAR_DESEQ"
+><IMG
+SRC="../images/callouts/3.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(3)"></A
+></DT
+><DD
+>Sabiendo que en el nodo al que apunta *t hay un
+          desequilibrio hacia la izquierda (de diferencia de
+          alturas 2), debemos averiguar qué clase de rotación
+            aplicar. En <A
+HREF="x191.htm#TREE12"
+>Figure 12</A
+> se explica
+          gráficamente a dónde apuntan las variables de la
+          función en un árbol genérico. </DD
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE12"
+></A
+><P
+><B
+>Figure 12. Decidiendo qué clase de rotación aplicar para
+            solucionar desequilibrio en el nodo.</B
+></P
+><P
+><IMG
+SRC="tree12.png"></P
+></DIV
+><DD
+><P
+>Como puede verse en el código, nos decidimos por
+            una rotación simple izquierda si el subárbol más pesado de
+            <TT
+CLASS="VARNAME"
+>(*t)-&#62;izq</TT
+> es el izquierdo o por
+            una rotación doble izquierda si el subárbol más pesado de
+            <TT
+CLASS="VARNAME"
+>(*t)-&#62;izq</TT
+> es el derecho. </P
+></DD
+><DT
+><A
+HREF="x191.htm#BALANCEAR_DERECHA"
+><IMG
+SRC="../images/callouts/4.gif"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(4)"></A
+></DT
+><DD
+>Si detectamos un desequilibrio hacia la derecha,
+          la toma de deciciones son análogas a las de un
+          desequilibrio hacia la izquierda, las cuales ya
+          explicamos. </DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x159.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x229.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Rotaciones dobles</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Inserción</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,286 @@
+<HTML
+><HEAD
+><TITLE
+>Eliminación</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.74b"><LINK
+REL="HOME"
+HREF="t1.htm"><LINK
+REL="PREVIOUS"
+TITLE="Inserción"
+HREF="x229.htm"><LINK
+REL="NEXT"
+TITLE="Conclusión"
+HREF="x253.htm"></HEAD
+><BODY
+CLASS="SECTION"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+></TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x229.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x253.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECTION"
+><H1
+CLASS="SECTION"
+><A
+NAME="AEN235"
+>Eliminación</A
+></H1
+><P
+>La estrategia para diseñar el algoritmo de eliminación
+    sobre árboles AVL es la misma que para la inserción: Se
+    utiliza el mismo algoritmo que sobre árboles binarios de
+    búsqueda, pero en cada recursión se detectan y corrijen
+    errores por medio de <TT
+CLASS="FUNCTION"
+>balancear()</TT
+> y se
+    actualiza la altura del nodo actual. </P
+><P
+>Recordamos un poco la idea del algoritmo de eliminación
+    sobre árboles binarios de búsqueda. Primero se recorre el
+    árbol para detectar el nodo a eliminar. Una vez hecho esto
+    hay tres casos a diferenciar por su complejidad: </P
+><P
+></P
+><UL
+><LI
+><P
+>Si dicho nodo es una hoja procedemos a eliminarlos
+        de inmediato, sin más.</P
+></LI
+><LI
+><P
+>Si dicho nodo tiene un sólo hijo, el nodo puede
+        eliminarse después de ajustar un apuntador del padre para
+          saltar el nodo. Esto se muestra en <A
+HREF="x235.htm#TREE13"
+>Figure 13</A
+>. </P
+><DIV
+CLASS="FIGURE"
+><A
+NAME="TREE13"
+></A
+><P
+><B
+>Figure 13. Eliminación de un nodo (7) con un sólo
+          hijo. </B
+></P
+><P
+><IMG
+SRC="tree13.png"></P
+></DIV
+></LI
+><LI
+><P
+>Si dicho nodo tiene dos hijos el caso es un poco
+        más complicado. Lo que se estila hacer (y que de hecho se
+          hace en el algoritmo gracias a la función auxiliar
+          <TT
+CLASS="FUNCTION"
+>eliminar_min()</TT
+>) reemplazar el nodo
+        actual por el menor nodo de su subárbol derecho (y luego
+        eliminar éste). </P
+></LI
+></UL
+><PRE
+CLASS="PROGRAMLISTING"
+>void eliminar (AVLTree ** t, int x);
+/* elimina x del árbol en un tiempo O(log(n)) peor caso. 
+   Precondición: existe un nodo con valor x en el árbol
+   t. */
+
+
+int eliminar_min (AVLTree ** t);
+/* Función auxiliar a eliminar(). Elimina el menor nodo del árbol
+   *t devolviendo su contenido (el cual no se libera de
+   memoria). Se actualizan las alturas de los nodos. 
+   Precondición: !es_vacio(*t) */
+
+
+
+void
+eliminar (AVLTree ** t, int x)
+{
+  AVLTree *aux;
+
+  if (x &#60; raiz (*t))
+    eliminar (&#38;(*t)-&#62;izq, x);
+
+  else if (x &#62; raiz (*t))
+    eliminar (&#38;(*t)-&#62;der, x);
+
+  else		    /* coincidencia! */
+    {
+      if (es_vacio (izquierdo (*t)) &#38;&#38; es_vacio (derecho (*t)))	
+	{/* es una hoja */
+	  free (*t);
+	  (*t) = vacio();
+	}
+      else if (es_vacio (izquierdo (*t)))	
+	{/* subárbol izquierdo vacio */
+	  aux = (*t);
+	  (*t) = (*t)-&#62;der;
+	  free (aux);
+	}
+      else if (es_vacio (derecho (*t)))
+	{/* subárbol derecho vacio */
+	  aux = (*t);
+	  (*t) = (*t)-&#62;izq;
+	  free (aux);
+	}
+      else     	/* caso más complicado */
+	{
+	  (*t)-&#62;dato = eliminar_min (&#38;(*t)-&#62;der);
+	}
+    }
+
+  balancear (t);
+  actualizar_altura (*t);
+}
+
+
+
+
+
+int
+eliminar_min (AVLTree ** t)
+{
+  if (es_vacio (*t))
+    {
+      fprintf (stderr,
+	       "No se respeta precondición de eliminar_min()\n");
+      exit(0);
+    }
+  else
+    {
+      if (!es_vacio (izquierdo (*t)))
+	{
+	  int x = eliminar_min (&#38;(*t)-&#62;izq);
+	  balancear (t);
+	  actualizar_altura (*t);
+	  return x;
+	}
+      else
+	{
+	  AVLTree *aux = (*t);
+	  int x = raiz (aux);
+	  *t = derecho (*t);
+	  free (aux);
+	  balancear (t);
+	  actualizar_altura (*t);
+	  return x;
+	}
+    }
+}
+
+    </PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x229.htm"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="t1.htm"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x253.htm"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Inserción</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Conclusión</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
