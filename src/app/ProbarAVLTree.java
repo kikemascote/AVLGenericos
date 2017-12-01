@@ -17,9 +17,27 @@ public class ProbarAVLTree {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        AVLTree arbolAVL = new AVLTree();
+        // comienza la medida del taim
+        long time_start, time_end;
+        time_start = System.currentTimeMillis();
 
+        AVLTree<Integer> arbolAVL = new AVLTree<>();
+        AVLTree<String> names = new AVLTree<>();
+
+        names.insert("jalil");
+        names.insert("alex");
+        names.insert("gaby");
+        names.insert("andrik");
+        names.insert("armando");
+        names.insert("chardo");
+        names.insert("meme");
+        names.imprimirPorNiveles();
+        //termina la medida del taim
+        time_end= System.currentTimeMillis();
+        System.out.println("\nTiempo para la insercion:"+(time_end-time_start)+"ms");
+
+        //inicia el taim de nuevo
+        time_start= System.currentTimeMillis();
         Integer elemento1 = new Integer("1");
         Integer elemento2 = new Integer("2");
         Integer elemento3 = new Integer("3");
@@ -42,6 +60,9 @@ public class ProbarAVLTree {
         arbolAVL.insert(elemento9);
         arbolAVL.insert(elemento10);
         arbolAVL.imprimirPorNiveles();
+        //termina la medida del taim
+        time_end= System.currentTimeMillis();
+        System.out.println("\nTiempo para la insercion:"+(time_end-time_start)+"ms");
         System.out.println("\n");
 
         

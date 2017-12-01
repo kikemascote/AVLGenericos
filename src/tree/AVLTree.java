@@ -11,39 +11,39 @@ import src.node.AVLNode;
  * @author fires
  * blog: http://proyectosbeta.blogspot.com/
  */
-public class AVLTree {
-    private AVLNode root;
+public class AVLTree<T extends Comparable<T>> implements Comparable<T> {
+    private AVLNode<T> root;
 
-    public void insert( Comparable x ){
-        root = insert( x, root );
+    public void insert(T value){
+        root = insert( value, root );
     }
 
     /*
-     * x es una instancia de una clase que implementa Comparable
+     * value es una instancia de una clase que implementa Comparable
     */
-    private AVLNode insert( Comparable x, AVLNode t ){
-        if( t == null )
-            t = new AVLNode( x, null, null );
-        else if( x.compareTo( t.dato ) < 0 ) {
-            t.izquierdo = insert( x, t.izquierdo );
-            if( height( t.izquierdo ) - height( t.derecho ) == 2 )
-                if( x.compareTo( t.izquierdo.dato ) < 0 )
-                    t = rotateWithLeftChild( t ); /* Caso 1 */
+    private AVLNode<T> insert(T value, AVLNode<T> nodo ){
+        if( nodo == null )
+            nodo = new AVLNode( value, null, null );
+        else if( value.compareTo( nodo.dato ) < 0 ) {
+            nodo.izquierdo = insert( value, nodo.izquierdo );
+            if( height( nodo.izquierdo ) - height( nodo.derecho ) == 2 )
+                if( value.compareTo( nodo.izquierdo.dato ) < 0 )
+                    nodo = rotateWithLeftChild( nodo ); /* Caso 1 */
                 else
-                    t = doubleWithLeftChild( t ); /* Caso 2 */
+                    nodo = doubleWithLeftChild( nodo ); /* Caso 2 */
         }
-        else if( x.compareTo( t.dato ) > 0 ) {
-            t.derecho = insert( x, t.derecho );
-            if( height( t.derecho ) - height( t.izquierdo ) == 2 )
-                if( x.compareTo( t.derecho.dato ) > 0 )
-                    t = rotateWithRightChild( t ); /* Caso 4 */
+        else if( value.compareTo( nodo.dato ) > 0 ) {
+            nodo.derecho = insert( value, nodo.derecho );
+            if( height( nodo.derecho ) - height( nodo.izquierdo ) == 2 )
+                if( value.compareTo( nodo.derecho.dato ) > 0 )
+                    nodo = rotateWithRightChild( nodo ); /* Caso 4 */
                 else
-                    t = doubleWithRightChild( t ); /* Caso 3 */
+                    nodo = doubleWithRightChild( nodo ); /* Caso 3 */
         }
         else
             ; // Duplicado; no hago nada
-        t.height = max( height( t.izquierdo ), height( t.derecho ) ) + 1;
-        return t;
+        nodo.height = max( height( nodo.izquierdo ), height( nodo.derecho ) ) + 1;
+        return nodo;
     }
 
 
@@ -52,7 +52,7 @@ public class AVLTree {
     }
 
 
-    private static AVLNode rotateWithLeftChild( AVLNode k2 ){
+    private AVLNode<T> rotateWithLeftChild(AVLNode<T> k2){
         AVLNode k1 = k2.izquierdo;
         k2.izquierdo = k1.derecho;
         k1.derecho = k2;
@@ -62,7 +62,7 @@ public class AVLTree {
     }
 
 
-    private static AVLNode rotateWithRightChild( AVLNode k1 ){
+    private AVLNode<T> rotateWithRightChild(AVLNode<T> k1){
         AVLNode k2 = k1.derecho;
         k1.derecho = k2.izquierdo;
         k2.izquierdo = k1;
@@ -72,19 +72,19 @@ public class AVLTree {
     }
 
 
-    private static AVLNode doubleWithLeftChild( AVLNode k3 ){
+    private AVLNode<T> doubleWithLeftChild(AVLNode<T> k3){
         k3.izquierdo = rotateWithRightChild( k3.izquierdo );
         return rotateWithLeftChild( k3 );
     }
 
 
-    private static AVLNode doubleWithRightChild( AVLNode k1 ){
+    private AVLNode<T> doubleWithRightChild(AVLNode<T> k1){
         k1.derecho = rotateWithLeftChild( k1.derecho );
         return rotateWithRightChild( k1 );
     }
 
 
-    private static int height( AVLNode t ){
+    private int height(AVLNode<T> t){
         return t == null ? -1 : t.height;
     }
 
@@ -95,7 +95,7 @@ public class AVLTree {
         imprimir(root);
     }
 
-    private void imprimir(AVLNode nodo){
+    private void imprimir(AVLNode<T> nodo){
         if ( nodo != null ){
             imprimir(nodo.derecho);
             System.out.println("["+ nodo.dato + "]");
@@ -113,7 +113,7 @@ public class AVLTree {
      * y dejando una identacion de varios espacios en blanco segun su
      * altura en el arbol
      */
-    private void imprimirXaltura(AVLNode nodo){
+    private void imprimirXaltura(AVLNode<T> nodo){
         if ( nodo != null ){
             imprimirXaltura(nodo.derecho);
             System.out.println( replicate(" ",height(root) - height(nodo)) +"["+ nodo.dato + "]");
@@ -126,7 +126,7 @@ public class AVLTree {
      * replica o concatena esa cadena a, cnt veces
      */
     private static String replicate (String a, int cnt){
-        String x = new String("");
+        String x = "";
 
         for ( int i = 0; i < cnt; i++ )
             x = x + a;
@@ -140,7 +140,7 @@ public class AVLTree {
         return calcularAltura(root);
     }
 
-    private int calcularAltura(AVLNode actual ){
+    private int calcularAltura(AVLNode<T> actual ){
        if (actual == null)
             return -1;
        else
@@ -153,7 +153,7 @@ public class AVLTree {
     }
 
     // Imprime el arbol por niveles.
-    private void imprimirPorNiveles(AVLNode nodo){
+    private void imprimirPorNiveles(AVLNode<T> nodo){
         // Mediante la altura calcula el total de nodos posibles del árbol
         // Y crea una array cola con ese tamaño
         int max = 0;
@@ -163,7 +163,7 @@ public class AVLTree {
             max += Math.pow(2, nivel);
         max++;      // Suma 1 para no utilizar la posicion 0 del array
 
-        AVLNode cola[] = new AVLNode[ max ];
+        AVLNode<T>[] cola = new AVLNode[max];
 
         // Carga en la pos 1 el nodo raiz
         cola[1] = nodo;
@@ -210,5 +210,10 @@ public class AVLTree {
                 ultimaPosicion += (int)Math.pow(2, ++nivel);
             }
         }
+    }
+
+    @Override
+    public int compareTo(T o) {
+        return 0;
     }
 }
