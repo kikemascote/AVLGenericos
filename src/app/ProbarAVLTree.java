@@ -59,6 +59,9 @@ public class ProbarAVLTree {
         arbolAVL.insert(elemento8);
         arbolAVL.insert(elemento9);
         arbolAVL.insert(elemento10);
+        for (int i = 0; i < 1000; i++) {
+            arbolAVL.insert((int) (Math.random()*(1000)+1));
+        }
         arbolAVL.imprimirPorNiveles();
         //termina la medida del taim
         time_end= System.currentTimeMillis();
